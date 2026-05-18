@@ -93,6 +93,8 @@ install_golang() {
         CURRENT=$(go version | grep -oP 'go\K[0-9.]+')
         if [ "$(printf '%s\n' "1.22" "$CURRENT" | sort -V | head -1)" = "1.22" ]; then
             log "Go ${CURRENT} >= 1.22，跳过安装"
+            # 仍然配置国内代理
+            go env -w GOPROXY=https://goproxy.cn,direct 2>/dev/null || true
             return 0
         fi
     fi
@@ -112,7 +114,10 @@ install_golang() {
     rm -f /tmp/go.tar.gz
     export PATH=/usr/local/go/bin:$PATH
     echo 'export PATH=/usr/local/go/bin:$PATH' > /etc/profile.d/go.sh
-    log "Go ${GO_VER} 安装完成"
+    # 配置国内 Go 模块代理
+    go env -w GOPROXY=https://goproxy.cn,direct
+    go env -w GONOSUMDB=*
+    log "Go ${GO_VER} 安装完成 (GOPROXY=goproxy.cn)"
 }
 
 install_node() {
