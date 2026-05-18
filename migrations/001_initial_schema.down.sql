@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS followup_tasks;
+DROP TABLE IF EXISTS faq_entries;
+DROP TABLE IF EXISTS ai_conversations;
+DROP TABLE IF EXISTS user_entitlements;
+DROP TABLE IF EXISTS member_packages;
+DROP TABLE IF EXISTS service_packages;
+DROP TABLE IF EXISTS health_reports;
+DROP TABLE IF EXISTS timeline_events;
+DROP TABLE IF EXISTS wechat_bindings;
+DROP TABLE IF EXISTS family_members;
+DROP TABLE IF EXISTS families;

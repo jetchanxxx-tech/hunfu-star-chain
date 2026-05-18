@@ -1,0 +1,75 @@
+server:
+  port: 8080
+  mode: debug  # debug | release
+
+database:
+  driver: mysql
+  dsn: ${MYSQL_DSN}
+  max_open_conns: 50
+  max_idle_conns: 10
+
+redis:
+  addr: ${REDIS_ADDR:-localhost:6379}
+  password: ${REDIS_PASSWORD:-}
+  db: 0
+
+rabbitmq:
+  url: ${RABBITMQ_URL:-}
+
+wechat:
+  miniprogram:
+    app_id: ${WX_MP_APPID:-}
+    app_secret: ${WX_MP_SECRET:-}
+  wework:
+    corp_id: ${WX_WEWORK_CORPID:-}
+    token: ${WX_WEWORK_TOKEN:-}
+    encoding_aes_key: ${WX_WEWORK_AESKEY:-}
+
+ai:
+  default_provider: deepseek
+  providers:
+    deepseek:
+      endpoint: https://api.deepseek.com/v1/chat/completions
+      api_key: ${DEEPSEEK_API_KEY:-}
+      model: deepseek-chat
+      timeout: 30s
+      max_retries: 3
+    qwen:
+      endpoint: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
+      api_key: ${QWEN_API_KEY:-}
+      model: qwen-turbo
+      timeout: 30s
+  emergency_keywords:
+    - 出血
+    - 剧痛
+    - 破水
+    - 大出血
+    - 抽搐
+    - 昏迷
+    - 呼吸困难
+    - 腹痛
+  emotion_detection:
+    enabled: true
+    provider: deepseek
+
+storage:
+  default: local
+  local:
+    path: /data/huifu/files
+  cos:
+    bucket: ""
+    region: ap-guangzhou
+    secret_id: ${COS_SECRET_ID:-}
+    secret_key: ${COS_SECRET_KEY:-}
+
+voice_call:
+  enabled: false
+  provider: aliyun
+
+sms:
+  enabled: false
+  provider: aliyun
+
+push:
+  enabled: false
+  provider: jpush

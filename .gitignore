@@ -1,0 +1,43 @@
+# Binaries
+/bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Go
+/vendor/
+
+# Node
+node_modules/
+dist/
+.npm/
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config & Secrets
+.env
+.env.local
+*.pem
+*.key
+
+# Logs
+*.log
+/logs/
+
+# Temp
+/tmp/
+/temp/

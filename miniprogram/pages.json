@@ -1,0 +1,50 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": { "navigationBarTitleText": "惠福星链" }
+    },
+    {
+      "path": "pages/auth/login",
+      "style": { "navigationBarTitleText": "登录" }
+    },
+    {
+      "path": "pages/timeline/timeline",
+      "style": { "navigationBarTitleText": "惠福时光轴" }
+    },
+    {
+      "path": "pages/family/family",
+      "style": { "navigationBarTitleText": "惠福同心圆" }
+    },
+    {
+      "path": "pages/packages/packages",
+      "style": { "navigationBarTitleText": "服务包中心" }
+    },
+    {
+      "path": "pages/reports/reports",
+      "style": { "navigationBarTitleText": "健康报告" }
+    },
+    {
+      "path": "pages/ai-chat/ai-chat",
+      "style": { "navigationBarTitleText": "惠福灵犀" }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "惠福星链",
+    "navigationBarBackgroundColor": "#2E75B6",
+    "backgroundColor": "#F5F7FA"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#2E75B6",
+    "borderStyle": "white",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "static/tab-home.png", "selectedIconPath": "static/tab-home-active.png" },
+      { "pagePath": "pages/timeline/timeline", "text": "时光轴", "iconPath": "static/tab-timeline.png", "selectedIconPath": "static/tab-timeline-active.png" },
+      { "pagePath": "pages/packages/packages", "text": "服务包", "iconPath": "static/tab-pkg.png", "selectedIconPath": "static/tab-pkg-active.png" },
+      { "pagePath": "pages/ai-chat/ai-chat", "text": "灵犀", "iconPath": "static/tab-ai.png", "selectedIconPath": "static/tab-ai-active.png" }
+    ]
+  }
+}
