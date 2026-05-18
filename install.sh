@@ -103,6 +103,9 @@ install_golang() {
         aarch64) GO_ARCH="arm64" ;;
         *) err "不支持的架构: $ARCH" ;;
     esac
+    # 国内优先用镜像，国外直连
+    GO_URL="https://golang.google.cn/dl/go${GO_VER}.linux-${GO_ARCH}.tar.gz"
+    curl -fsSL "$GO_URL" -o /tmp/go.tar.gz 2>/dev/null || \
     curl -fsSL "https://go.dev/dl/go${GO_VER}.linux-${GO_ARCH}.tar.gz" -o /tmp/go.tar.gz
     rm -rf /usr/local/go
     tar -C /usr/local -xzf /tmp/go.tar.gz
@@ -123,7 +126,8 @@ install_node() {
     warn "安装 Node.js 20 LTS..."
     case $OS in
         ubuntu|debian)
-            curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+            curl -fsSL https://deb.nodesource.com/setup_20.x | bash - 2>/dev/null || \
+            curl -fsSL https://mirrors.tuna.tsinghua.edu.cn/nodesource/deb/setup_20.x | bash -
             $PKG_MGR install -y nodejs
             ;;
         centos|rhel|fedora|rocky|almalinux)
@@ -131,6 +135,8 @@ install_node() {
             $PKG_MGR install -y nodejs
             ;;
     esac
+    # 国内镜像加速
+    npm config set registry https://registry.npmmirror.com 2>/dev/null || true
     log "Node.js $(node -v) 安装完成"
 }
 
@@ -161,7 +167,10 @@ install_migrate() {
         aarch64) MIG_ARCH="arm64" ;;
         *) err "不支持的架构: $ARCH" ;;
     esac
-    curl -fsSL "https://github.com/golang-migrate/migrate/releases/download/v${MIG_VER}/migrate.linux-${MIG_ARCH}.tar.gz" -o /tmp/migrate.tar.gz
+    # 国内优先用镜像
+    MIG_URL="https://github.com/golang-migrate/migrate/releases/download/v${MIG_VER}/migrate.linux-${MIG_ARCH}.tar.gz"
+    curl -fsSL "https://ghproxy.com/$MIG_URL" -o /tmp/migrate.tar.gz 2>/dev/null || \
+    curl -fsSL "$MIG_URL" -o /tmp/migrate.tar.gz
     tar -C /usr/local/bin -xzf /tmp/migrate.tar.gz migrate
     rm -f /tmp/migrate.tar.gz
     log "golang-migrate 安装完成"
@@ -212,7 +221,8 @@ setup_env() {
 
     if [ -f "${SCRIPT_DIR}/.env.example" ]; then
         cp "${SCRIPT_DIR}/.env.example" "${INSTALL_DIR}/.env"
-    elif curl -fsSL "https://raw.githubusercontent.com/jetchanxxx-tech/hunfu-star-chain/master/.env.example" -o "${INSTALL_DIR}/.env" 2>/dev/null; then
+    elif curl -fsSL "https://raw.githubusercontent.com/jetchanxxx-tech/hunfu-star-chain/master/.env.example" -o "${INSTALL_DIR}/.env" 2>/dev/null || \
+         curl -fsSL "https://ghproxy.com/https://raw.githubusercontent.com/jetchanxxx-tech/hunfu-star-chain/master/.env.example" -o "${INSTALL_DIR}/.env" 2>/dev/null; then
         log "已下载 .env.example"
     else
         warn "无法获取 .env.example，手动创建默认配置"
