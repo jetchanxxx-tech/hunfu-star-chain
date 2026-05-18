@@ -145,20 +145,6 @@ install_node() {
     log "Node.js $(node -v) 安装完成"
 }
 
-install_nginx() {
-    if check_cmd nginx; then
-        log "Nginx 已安装，跳过"
-        return 0
-    fi
-    warn "安装 Nginx..."
-    case $OS in
-        ubuntu|debian) $PKG_MGR install -y nginx ;;
-        centos|rhel|fedora|rocky|almalinux) $PKG_MGR install -y nginx ;;
-    esac
-    systemctl enable --now nginx
-    log "Nginx 安装完成"
-}
-
 install_migrate() {
     if check_cmd migrate; then
         log "golang-migrate 已安装，跳过"
@@ -201,8 +187,7 @@ install_all() {
     section "5/6 安装 Node.js 20"
     install_node
 
-    section "6/6 安装 Nginx + golang-migrate"
-    install_nginx
+    section "6/6 安装 golang-migrate"
     install_migrate
 
     export PATH=/usr/local/go/bin:$PATH
@@ -335,38 +320,6 @@ SYSTEMD
     fi
 }
 
-setup_nginx() {
-    info "配置 Nginx..."
-    mkdir -p /etc/nginx/ssl
-
-    cat > /etc/nginx/sites-available/huifu << 'NGINXCFG'
-server {
-    listen 80;
-    server_name _;
-
-    # API 反代
-    location /api/ {
-        proxy_pass http://127.0.0.1:8080;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_read_timeout 30s;
-    }
-
-    # 管理后台
-    root /opt/huifu/admin-dist;
-    index index.html;
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
-NGINXCFG
-
-    rm -f /etc/nginx/sites-enabled/default
-    ln -sf /etc/nginx/sites-available/huifu /etc/nginx/sites-enabled/huifu
-    nginx -t && systemctl reload nginx && log "Nginx 配置完成" || warn "Nginx 配置有误"
-}
-
 # ==================== 健康检查 ====================
 health_check() {
     info "健康检查..."
@@ -403,13 +356,12 @@ main() {
     deploy_files
     run_migration
     setup_systemd
-    setup_nginx
     health_check
 
     section "安装完成!"
     echo ""
     echo "  后端 API:    http://$(hostname -I | awk '{print $1}'):8080/api/health"
-    echo "  管理后台:    http://$(hostname -I | awk '{print $1}')/"
+    echo "  管理后台:    已编译到 ${INSTALL_DIR}/admin-dist/（需自行配置静态文件服务）"
     echo "  服务管理:    systemctl start|stop|restart|status ${APP}"
     echo "  查看日志:    journalctl -u ${APP} -f"
     echo "  运维手册:    ${INSTALL_DIR}/../docs/OPS_MANUAL.md"
