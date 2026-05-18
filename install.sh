@@ -209,13 +209,14 @@ setup_env() {
         log ".env 已存在，跳过"
         return 0
     fi
+
     if [ -f "${SCRIPT_DIR}/.env.example" ]; then
         cp "${SCRIPT_DIR}/.env.example" "${INSTALL_DIR}/.env"
+    elif curl -fsSL "https://raw.githubusercontent.com/jetchanxxx-tech/hunfu-star-chain/master/.env.example" -o "${INSTALL_DIR}/.env" 2>/dev/null; then
+        log "已下载 .env.example"
     else
-        # 在线安装时从 GitHub 下载
-        curl -fsSL "https://raw.githubusercontent.com/jetchanxxx-tech/hunfu-star-chain/master/.env.example" -o "${INSTALL_DIR}/.env" 2>/dev/null || {
-            warn "无法下载 .env.example，手动创建"
-            cat > "${INSTALL_DIR}/.env" << 'ENVEOF'
+        warn "无法获取 .env.example，手动创建默认配置"
+        cat > "${INSTALL_DIR}/.env" << 'ENVEOF'
 MYSQL_DSN=root:CHANGE_ME@tcp(127.0.0.1:3306)/huifu?charset=utf8mb4&parseTime=True&loc=Local
 REDIS_ADDR=127.0.0.1:6379
 REDIS_PASSWORD=
@@ -225,8 +226,8 @@ WX_MP_APPID=
 WX_MP_SECRET=
 DATA_DIR=/data/huifu/files
 ENVEOF
-        fi
     fi
+
     chown "$APP_USER":"$APP_USER" "${INSTALL_DIR}/.env"
     chmod 600 "${INSTALL_DIR}/.env"
     log ".env 已创建 → ${INSTALL_DIR}/.env"
