@@ -22,8 +22,10 @@ wechat:
     app_secret: ${WX_MP_SECRET:-}
   wework:
     corp_id: ${WX_WEWORK_CORPID:-}
+    corp_secret: ${WX_WEWORK_SECRET:-}
     token: ${WX_WEWORK_TOKEN:-}
     encoding_aes_key: ${WX_WEWORK_AESKEY:-}
+    agent_id: ${WX_WEWORK_AGENTID:-0}
 
 ai:
   default_provider: deepseek
@@ -73,3 +75,5 @@ sms:
 push:
   enabled: false
   provider: jpush
+
+qr_verify_secret: ${QR_VERIFY_SECRET:-huifu-verify-prod-key}

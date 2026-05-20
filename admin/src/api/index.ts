@@ -47,7 +47,56 @@ export const api = {
   updatePackage(id: string, data: any) {
     return http.put(`/admin/packages/${id}`, data)
   },
-  // Followup
+  // Timeline Node Config
+  getNodeTemplates() {
+    return http.get('/admin/node-templates')
+  },
+  upsertNodeTemplate(data: any) {
+    return http.post('/admin/node-templates', data)
+  },
+  updateTemplateStatus(code: string, status: string) {
+    return http.patch(`/admin/node-templates/${code}/status`, { status })
+  },
+  getNodeOverrides(hospitalCode: string) {
+    return http.get(`/admin/node-overrides/${hospitalCode}`)
+  },
+  upsertNodeOverride(data: any) {
+    return http.post('/admin/node-overrides', data)
+  },
+  deleteNodeOverride(hospitalCode: string, nodeCode: string) {
+    return http.delete(`/admin/node-overrides/${hospitalCode}?node_code=${nodeCode}`)
+  },
+  // Followup Tasks
+  getTasks(params: any) {
+    return http.get('/tasks', { params })
+  },
+  getTask(id: number) {
+    return http.get(`/tasks/${id}`)
+  },
+  createTask(data: any) {
+    return http.post('/tasks', data)
+  },
+  assignTask(id: number, stewardId: number) {
+    return http.patch(`/tasks/${id}/assign`, { steward_id: stewardId })
+  },
+  completeTask(id: number, notes: string) {
+    return http.patch(`/tasks/${id}/complete`, { notes })
+  },
+  cancelTask(id: number, reason: string) {
+    return http.patch(`/tasks/${id}/cancel`, { reason })
+  },
+  getTaskStats() {
+    return http.get('/admin/task-stats')
+  },
+  // Verification
+  getVerificationRecords(params: any) {
+    return http.get('/admin/verification-records', { params })
+  },
+  // Authorization Audit
+  getAuthAuditLogs(params: any) {
+    return http.get('/admin/authorization-logs', { params })
+  },
+  // Followup (existing)
   getFollowupRules() {
     return http.get('/admin/followup/rules')
   },

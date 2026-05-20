@@ -16,6 +16,10 @@ const routes = [
       { path: 'members', name: 'Members', component: () => import('@/views/members.vue'), meta: { title: '会员管理' } },
       { path: 'packages', name: 'Packages', component: () => import('@/views/packages-admin.vue'), meta: { title: '服务包配置' } },
       { path: 'followup', name: 'Followup', component: () => import('@/views/followup.vue'), meta: { title: '随访规则' } },
+      { path: 'tasks', name: 'Tasks', component: () => import('@/views/tasks.vue'), meta: { title: '任务管理' } },
+      { path: 'timeline-config', name: 'TimelineConfig', component: () => import('@/views/timeline-config.vue'), meta: { title: '时间轴配置' } },
+      { path: 'verification', name: 'Verification', component: () => import('@/views/verification.vue'), meta: { title: '核销记录' } },
+      { path: 'auth-audit', name: 'AuthAudit', component: () => import('@/views/auth-audit.vue'), meta: { title: '授权审计' } },
       { path: 'system', name: 'System', component: () => import('@/views/system.vue'), meta: { title: '系统管理' } }
     ]
   }

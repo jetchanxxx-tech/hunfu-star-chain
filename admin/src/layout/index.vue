@@ -19,6 +19,22 @@
           <el-icon><Clock /></el-icon>
           <span>随访规则</span>
         </el-menu-item>
+        <el-menu-item index="/tasks">
+          <el-icon><List /></el-icon>
+          <span>任务管理</span>
+        </el-menu-item>
+        <el-menu-item index="/timeline-config">
+          <el-icon><Timer /></el-icon>
+          <span>时间轴配置</span>
+        </el-menu-item>
+        <el-menu-item index="/verification">
+          <el-icon><CircleCheck /></el-icon>
+          <span>核销记录</span>
+        </el-menu-item>
+        <el-menu-item index="/auth-audit">
+          <el-icon><Document /></el-icon>
+          <span>授权审计</span>
+        </el-menu-item>
         <el-menu-item index="/system">
           <el-icon><Setting /></el-icon>
           <span>系统管理</span>

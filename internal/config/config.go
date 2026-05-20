@@ -9,16 +9,17 @@ import (
 )
 
 type Config struct {
-	Server   ServerConfig   `yaml:"server"`
-	Database DatabaseConfig `yaml:"database"`
-	Redis    RedisConfig    `yaml:"redis"`
-	RabbitMQ RabbitMQConfig `yaml:"rabbitmq"`
-	Wechat   WechatConfig   `yaml:"wechat"`
-	AI       AIConfig       `yaml:"ai"`
-	Storage  StorageConfig  `yaml:"storage"`
-	VoiceCall ProviderConfig `yaml:"voice_call"`
-	SMS      ProviderConfig `yaml:"sms"`
-	Push     ProviderConfig `yaml:"push"`
+	Server        ServerConfig   `yaml:"server"`
+	Database      DatabaseConfig `yaml:"database"`
+	Redis         RedisConfig    `yaml:"redis"`
+	RabbitMQ      RabbitMQConfig `yaml:"rabbitmq"`
+	Wechat        WechatConfig   `yaml:"wechat"`
+	AI            AIConfig       `yaml:"ai"`
+	Storage       StorageConfig  `yaml:"storage"`
+	VoiceCall     ProviderConfig `yaml:"voice_call"`
+	SMS           ProviderConfig `yaml:"sms"`
+	Push          ProviderConfig `yaml:"push"`
+	QRVerifySecret string        `yaml:"qr_verify_secret"`
 }
 
 type ServerConfig struct {
@@ -55,8 +56,10 @@ type MiniprogramConfig struct {
 
 type WeworkConfig struct {
 	CorpID         string `yaml:"corp_id"`
+	CorpSecret     string `yaml:"corp_secret"`
 	Token          string `yaml:"token"`
 	EncodingAESKey string `yaml:"encoding_aes_key"`
+	AgentID        int    `yaml:"agent_id"`
 }
 
 type AIConfig struct {

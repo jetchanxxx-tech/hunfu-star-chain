@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS voice_templates;
+DROP TABLE IF EXISTS voice_call_logs;
+DROP TABLE IF EXISTS data_sync_logs;
+DROP TABLE IF EXISTS dead_letter_queue;
+DROP TABLE IF EXISTS verification_records;
+DROP TABLE IF EXISTS authorization_audit_log;
+DROP TABLE IF EXISTS member_authorizations;
+DROP TABLE IF EXISTS hospital_node_overrides;
+DROP TABLE IF EXISTS timeline_node_templates;
