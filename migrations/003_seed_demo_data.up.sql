@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS data_sync_logs (
     INDEX idx_source_time (source, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='数据同步日志';
 
-INSERT INTO admin_users (username, password, role, real_name, phone, status) VALUES
+INSERT IGNORE INTO admin_users (username, password, role, real_name, phone, status) VALUES
 ('admin',       '$2b$10$hc1RjGxjKrMSinSs3Y8GFObAz9uJijm5p/8izw0MTmEQUyGpjyqf.',  'super_admin', '系统管理员', '13800000001', 'active'),
 ('steward01',   '$2b$10$ukJv2hhYQLOQb8LN7dJ1AOdeNkztho4LD7T8XyFGUKi5xSuDaiP.i',  'steward',     '张管家',     '13800000002', 'active'),
 ('steward02',   '$2b$10$ukJv2hhYQLOQb8LN7dJ1AOdeNkztho4LD7T8XyFGUKi5xSuDaiP.i',  'steward',     '李管家',     '13800000003', 'active'),
@@ -105,7 +105,7 @@ INSERT INTO admin_users (username, password, role, real_name, phone, status) VAL
 -- ============================================================
 -- 2. 服务包
 -- ============================================================
-INSERT INTO service_packages (package_uuid, name, description, level, price, benefits, status) VALUES
+INSERT IGNORE INTO service_packages (package_uuid, name, description, level, price, benefits, status) VALUES
 ('pkg-0000-0000-0000-0001', 'VIP 孕期护航版',
  '孕前检查、NT、四维、糖耐量等全程产检咨询，含12次在线问诊、24次报告解读',
  'VIP', 2999.00,
@@ -148,57 +148,57 @@ INSERT INTO service_packages (package_uuid, name, description, level, price, ben
 -- 状态分布: active=42, inactive=8
 -- ============================================================
 
--- F1: 张明家庭 (4人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000001', '张明的家', 1);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+-- F1: 张明家��� (4人)
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000001', '张明的家', 1);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (1,  'm0000001-aaaa-bbbb-cccc-000000000001', 1, 'self',   '大明', SHA2('张明',256), SHA2('13900010001',256), 1, '1990-03-15', 'HC001001', 'active'),
 (2,  'm0000001-aaaa-bbbb-cccc-000000000002', 1, 'spouse', '娜娜', SHA2('李娜',256), SHA2('13900010002',256), 0, '1992-07-22', 'HC001002', 'active'),
 (3,  'm0000001-aaaa-bbbb-cccc-000000000003', 1, 'child',  '小明', SHA2('张小明',256), SHA2('13900010003',256), 1, '2025-01-10', NULL, 'active'),
 (4,  'm0000001-aaaa-bbbb-cccc-000000000004', 1, 'parent', '张爸', SHA2('张德福',256), SHA2('13900010004',256), 1, '1965-11-03', 'HC001004', 'active');
 
 -- F2: 王芳家庭 (1人·单亲妈妈)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000002', '王芳的家', 5);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000002', '王芳的家', 5);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (5,  'm0000001-aaaa-bbbb-cccc-000000000005', 2, 'self', '芳芳', SHA2('王芳',256), SHA2('13900020001',256), 0, '1994-05-18', 'HC002001', 'active');
 
 -- F3: 刘伟家庭 (4人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000003', '刘伟的家', 6);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000003', '刘伟的家', 6);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (6,  'm0000001-aaaa-bbbb-cccc-000000000006', 3, 'self',   '大伟', SHA2('刘伟',256), SHA2('13900030001',256), 1, '1988-09-12', 'HC003001', 'active'),
 (7,  'm0000001-aaaa-bbbb-cccc-000000000007', 3, 'spouse', '静静', SHA2('陈静',256), SHA2('13900030002',256), 0, '1990-01-28', 'HC003002', 'active'),
 (8,  'm0000001-aaaa-bbbb-cccc-000000000008', 3, 'child',  '小伟', SHA2('刘小伟',256), SHA2('13900030003',256), 1, '2023-08-05', NULL, 'active'),
 (9,  'm0000001-aaaa-bbbb-cccc-000000000009', 3, 'child',  '小雨', SHA2('刘小雨',256), SHA2('13900030004',256), 0, '2025-02-14', NULL, 'active');
 
 -- F4: 赵丽家庭 (2人·离异带娃)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000004', '赵丽的小窝', 10);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000004', '赵丽的小窝', 10);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (10, 'm0000001-aaaa-bbbb-cccc-000000000010', 4, 'self',  '丽丽', SHA2('赵丽',256), SHA2('13900040001',256), 0, '1993-12-03', 'HC004001', 'active'),
 (11, 'm0000001-aaaa-bbbb-cccc-000000000011', 4, 'child', '小宝', SHA2('赵小宝',256), SHA2('13900040002',256), 1, '2024-06-20', NULL, 'active');
 
 -- F5: 孙涛家庭 (3人·新晋父母)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000005', '孙涛的家', 12);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000005', '孙涛的家', 12);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (12, 'm0000001-aaaa-bbbb-cccc-000000000012', 5, 'self',   '涛哥', SHA2('孙涛',256), SHA2('13900050001',256), 1, '1991-06-08', 'HC005001', 'active'),
 (13, 'm0000001-aaaa-bbbb-cccc-000000000013', 5, 'spouse', '婷婷', SHA2('周婷',256), SHA2('13900050002',256), 0, '1993-11-20', 'HC005002', 'active'),
 (14, 'm0000001-aaaa-bbbb-cccc-000000000014', 5, 'parent', '孙妈', SHA2('钱秀兰',256), SHA2('13900050003',256), 0, '1963-04-25', 'HC005003', 'active');
 
 -- F6: 周杰家庭 (4人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000006', '周杰的家', 15);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000006', '周杰的家', 15);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (15, 'm0000001-aaaa-bbbb-cccc-000000000015', 6, 'self',   '杰哥', SHA2('周杰',256), SHA2('13900060001',256), 1, '1987-02-14', 'HC006001', 'active'),
 (16, 'm0000001-aaaa-bbbb-cccc-000000000016', 6, 'spouse', '敏敏', SHA2('吴敏',256), SHA2('13900060002',256), 0, '1989-08-30', 'HC006002', 'active'),
 (17, 'm0000001-aaaa-bbbb-cccc-000000000017', 6, 'child',  '小杰', SHA2('周小杰',256), SHA2('13900060003',256), 1, '2024-02-28', NULL, 'active'),
 (18, 'm0000001-aaaa-bbbb-cccc-000000000018', 6, 'parent', '周爸', SHA2('周建国',256), SHA2('13900060004',256), 1, '1960-09-10', 'HC006004', 'inactive');
 
 -- F7: 黄蓉家庭 (2人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000007', '蓉儿的小家', 19);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000007', '蓉儿的小家', 19);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (19, 'm0000001-aaaa-bbbb-cccc-000000000019', 7, 'self',  '蓉儿', SHA2('黄蓉',256), SHA2('13900070001',256), 0, '1995-08-15', 'HC007001', 'active'),
 (20, 'm0000001-aaaa-bbbb-cccc-000000000020', 7, 'child', '子涵', SHA2('黄子涵',256), SHA2('13900070002',256), 0, '2024-11-02', NULL, 'active');
 
 -- F8: 杨勇家庭 (5人·三代同堂)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000008', '杨家大家庭', 21);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000008', '杨家大家庭', 21);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (21, 'm0000001-aaaa-bbbb-cccc-000000000021', 8, 'self',   '勇哥', SHA2('杨勇',256), SHA2('13900080001',256), 1, '1986-04-02', 'HC008001', 'active'),
 (22, 'm0000001-aaaa-bbbb-cccc-000000000022', 8, 'spouse', '丽丽', SHA2('徐丽',256), SHA2('13900080002',256), 0, '1988-12-17', 'HC008002', 'active'),
 (23, 'm0000001-aaaa-bbbb-cccc-000000000023', 8, 'child',  '大勇', SHA2('杨小勇',256), SHA2('13900080003',256), 1, '2021-07-05', NULL, 'active'),
@@ -206,58 +206,58 @@ INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real
 (25, 'm0000001-aaaa-bbbb-cccc-000000000025', 8, 'parent', '杨妈', SHA2('陈桂英',256), SHA2('13900080005',256), 0, '1962-03-08', 'HC008005', 'inactive');
 
 -- F9: 马超家庭 (3人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000009', '马超的家', 26);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000009', '马超的家', 26);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (26, 'm0000001-aaaa-bbbb-cccc-000000000026', 9, 'self',   '超哥', SHA2('马超',256), SHA2('13900090001',256), 1, '1992-01-30', 'HC009001', 'active'),
 (27, 'm0000001-aaaa-bbbb-cccc-000000000027', 9, 'spouse', '红红', SHA2('朱红',256), SHA2('13900090002',256), 0, '1994-06-12', 'HC009002', 'active'),
 (28, 'm0000001-aaaa-bbbb-cccc-000000000028', 9, 'child',  '小红', SHA2('马小红',256), SHA2('13900090003',256), 0, '2025-03-01', NULL, 'active');
 
 -- F10: 何平家庭 (1人·未婚)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000010', '何平的家', 29);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000010', '何平的家', 29);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (29, 'm0000001-aaaa-bbbb-cccc-000000000029', 10, 'self', '阿平', SHA2('何平',256), SHA2('13900100001',256), 1, '1998-09-25', 'HC010001', 'active');
 
 -- F11: 林晓家庭 (3人·二胎中)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000011', '林家小院', 30);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000011', '林家小院', 30);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (30, 'm0000001-aaaa-bbbb-cccc-000000000030', 11, 'self',   '晓晓', SHA2('林晓',256), SHA2('13900110001',256), 0, '1993-03-21', 'HC011001', 'active'),
 (31, 'm0000001-aaaa-bbbb-cccc-000000000031', 11, 'spouse', '宝玉', SHA2('贾宝玉',256), SHA2('13900110002',256), 1, '1991-10-07', 'HC011002', 'active'),
 (32, 'm0000001-aaaa-bbbb-cccc-000000000032', 11, 'child',  '小玉', SHA2('贾小玉',256), SHA2('13900110003',256), 0, '2024-09-15', NULL, 'active');
 
 -- F12: 陈强家庭 (4人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000012', '陈强的家', 33);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000012', '陈强的家', 33);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (33, 'm0000001-aaaa-bbbb-cccc-000000000033', 12, 'self',   '强哥', SHA2('陈强',256), SHA2('13900120001',256), 1, '1985-07-19', 'HC012001', 'active'),
 (34, 'm0000001-aaaa-bbbb-cccc-000000000034', 12, 'spouse', '王丽', SHA2('王丽',256), SHA2('13900120002',256), 0, '1987-05-28', 'HC012002', 'active'),
 (35, 'm0000001-aaaa-bbbb-cccc-000000000035', 12, 'child',  '晨晨', SHA2('陈晨',256), SHA2('13900120003',256), 1, '2022-12-12', NULL, 'active'),
 (36, 'm0000001-aaaa-bbbb-cccc-000000000036', 12, 'other',  '陈叔', SHA2('陈建国',256), SHA2('13900120004',256), 1, '1961-08-08', 'HC012004', 'active');
 
 -- F13: 宋江家庭 (4人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000013', '宋府', 37);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000013', '宋府', 37);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (37, 'm0000001-aaaa-bbbb-cccc-000000000037', 13, 'self',   '江哥', SHA2('宋江',256), SHA2('13900130001',256), 1, '1984-11-11', 'HC013001', 'active'),
 (38, 'm0000001-aaaa-bbbb-cccc-000000000038', 13, 'spouse', '师师', SHA2('李师师',256), SHA2('13900130002',256), 0, '1986-02-14', 'HC013002', 'active'),
 (39, 'm0000001-aaaa-bbbb-cccc-000000000039', 13, 'child',  '宋清', SHA2('宋清',256), SHA2('13900130003',256), 1, '2022-04-30', NULL, 'active'),
 (40, 'm0000001-aaaa-bbbb-cccc-000000000040', 13, 'child',  '宋玉', SHA2('宋玉',256), SHA2('13900130004',256), 0, '2024-10-18', NULL, 'active');
 
 -- F14: 曹操家庭 (4人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000014', '曹家大院', 41);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000014', '曹家大院', 41);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (41, 'm0000001-aaaa-bbbb-cccc-000000000041', 14, 'self',   '孟德', SHA2('曹操',256), SHA2('13900140001',256), 1, '1983-05-06', 'HC014001', 'active'),
 (42, 'm0000001-aaaa-bbbb-cccc-000000000042', 14, 'spouse', '丁夫人', SHA2('丁红',256), SHA2('13900140002',256), 0, '1985-09-15', 'HC014002', 'inactive'),
 (43, 'm0000001-aaaa-bbbb-cccc-000000000043', 14, 'child',  '曹丕', SHA2('曹丕',256), SHA2('13900140003',256), 1, '2020-01-20', NULL, 'active'),
 (44, 'm0000001-aaaa-bbbb-cccc-000000000044', 14, 'child',  '曹植', SHA2('曹植',256), SHA2('13900140004',256), 1, '2024-01-08', NULL, 'active');
 
 -- F15: 刘备家庭 (3人)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000015', '刘皇叔家', 45);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000015', '刘皇叔家', 45);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (45, 'm0000001-aaaa-bbbb-cccc-000000000045', 15, 'self',   '玄德', SHA2('刘备',256), SHA2('13900150001',256), 1, '1982-12-31', 'HC015001', 'active'),
 (46, 'm0000001-aaaa-bbbb-cccc-000000000046', 15, 'spouse', '尚香', SHA2('孙尚香',256), SHA2('13900150002',256), 0, '1984-04-08', 'HC015002', 'active'),
 (47, 'm0000001-aaaa-bbbb-cccc-000000000047', 15, 'child',  '阿斗', SHA2('刘禅',256), SHA2('13900150003',256), 1, '2023-06-15', NULL, 'active');
 
 -- F16: 吴用家庭 (3人·补充至50)
-INSERT INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000016', '吴用的家', 48);
-INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
+INSERT IGNORE INTO families (family_uuid, name, primary_member_id) VALUES ('f0000001-aaaa-bbbb-cccc-000000000016', '吴用的家', 48);
+INSERT IGNORE INTO family_members (id, member_uuid, family_id, relation, nickname, real_name_hash, phone_hash, gender, birth_date, health_card, status) VALUES
 (48, 'm0000001-aaaa-bbbb-cccc-000000000048', 16, 'self',   '智多星', SHA2('吴用',256), SHA2('13900160001',256), 1, '1990-10-01', 'HC016001', 'active'),
 (49, 'm0000001-aaaa-bbbb-cccc-000000000049', 16, 'spouse', '公孙嫂', SHA2('公孙兰',256), SHA2('13900160002',256), 0, '1992-08-16', 'HC016002', 'active'),
 (50, 'm0000001-aaaa-bbbb-cccc-000000000050', 16, 'child',  '小宝', SHA2('吴小宝',256), SHA2('13900160003',256), 1, '2025-04-22', NULL, 'active');
@@ -265,7 +265,7 @@ INSERT INTO family_members (id, member_uuid, family_id, relation, nickname, real
 -- ============================================================
 -- 4. 微信绑定 (部分用户)
 -- ============================================================
-INSERT INTO wechat_bindings (member_id, union_id, openid_mp) VALUES
+INSERT IGNORE INTO wechat_bindings (member_id, union_id, openid_mp) VALUES
 (1,  'wx-union-0000000001', 'wx-openid-mp-0000000001'),
 (2,  'wx-union-0000000002', 'wx-openid-mp-0000000002'),
 (5,  'wx-union-0000000005', 'wx-openid-mp-0000000005'),
@@ -289,7 +289,7 @@ INSERT INTO wechat_bindings (member_id, union_id, openid_mp) VALUES
 -- ============================================================
 -- 5. 会员购买记录 (多状态: active/expired/refunded)
 -- ============================================================
-INSERT INTO member_packages (member_id, package_id, order_no, amount, start_date, end_date, status) VALUES
+INSERT IGNORE INTO member_packages (member_id, package_id, order_no, amount, start_date, end_date, status) VALUES
 -- 活跃购买
 (1,  1, 'ORD202501001', 2999.00,  '2025-01-15', '2026-01-15', 'active'),
 (2,  1, 'ORD202501002', 2999.00,  '2025-01-15', '2026-01-15', 'active'),
@@ -337,7 +337,7 @@ INSERT INTO member_packages (member_id, package_id, order_no, amount, start_date
 -- ============================================================
 -- 6. 用户权益 (基于活跃购买包)
 -- ============================================================
-INSERT INTO user_entitlements (member_id, package_id, benefit_type, total, consumed, valid_until) VALUES
+INSERT IGNORE INTO user_entitlements (member_id, package_id, benefit_type, total, consumed, valid_until) VALUES
 -- 张明 (VIP孕期护航版)
 (1, 1, 'consult',        12,  3, '2026-01-15'),
 (1, 1, 'report_explain', 24,  8, '2026-01-15'),
@@ -405,7 +405,7 @@ INSERT INTO user_entitlements (member_id, package_id, benefit_type, total, consu
 -- ============================================================
 -- 7. 时间轴事件 (模拟真实孕期/产后/育儿场景)
 -- ============================================================
-INSERT INTO timeline_events (member_id, event_type, event_date, event_data, source) VALUES
+INSERT IGNORE INTO timeline_events (member_id, event_type, event_date, event_data, source) VALUES
 -- 李娜(2) - 孕期完整时间轴
 (2, 'first_prenatal', '2024-12-01', '{"gestation_week":8,"notes":"首次产检确认宫内妊娠"}', 'auto'),
 (2, 'nt',             '2025-01-05', '{"gestation_week":12,"nt_value":"1.2mm","result":"正常"}', 'auto'),
@@ -476,7 +476,7 @@ INSERT INTO timeline_events (member_id, event_type, event_date, event_data, sour
 -- ============================================================
 -- 8. 健康报告 (检验/检查/出院小结)
 -- ============================================================
-INSERT INTO health_reports (member_id, report_type, hospital_code, report_no, summary, abnormal_flags, report_date, source) VALUES
+INSERT IGNORE INTO health_reports (member_id, report_type, hospital_code, report_no, summary, abnormal_flags, report_date, source) VALUES
 -- 李娜 - 孕期检查
 (2, 'lab',     'HOSP001', 'RPT202501001', '{"hgb":125,"glucose":5.1,"alt":18,"creatinine":55}', NULL, '2025-01-05', 'lis'),
 (2, 'imaging', 'HOSP001', 'RPT202503001', '{"procedure":"NT超声","result":"NT 1.2mm，正常范围","crl":55}', NULL, '2025-01-05', 'pacs'),
@@ -510,7 +510,7 @@ INSERT INTO health_reports (member_id, report_type, hospital_code, report_no, su
 -- ============================================================
 -- 9. AI 对话记录
 -- ============================================================
-INSERT INTO ai_conversations (member_id, session_id, provider, role, content, tokens_in, tokens_out, emotion_tag, created_at) VALUES
+INSERT IGNORE INTO ai_conversations (member_id, session_id, provider, role, content, tokens_in, tokens_out, emotion_tag, created_at) VALUES
 -- 李娜 - 孕期焦虑咨询
 (2, 'sess-0001-aaaa-000000000001', 'deepseek', 'user',      '我最近感觉胎动减少了，是不是有问题？现在孕28周', 0, 0, 'anxious', '2025-03-25 09:15:00'),
 (2, 'sess-0001-aaaa-000000000001', 'deepseek', 'assistant', '胎动减少需要关注。孕28周胎儿每天应有10次以上胎动，建议您选择一个固定时间监测。如果2小时内胎动不足10次，请及时到院检查。', 45, 120, NULL, '2025-03-25 09:15:05'),
@@ -544,7 +544,7 @@ INSERT INTO ai_conversations (member_id, session_id, provider, role, content, to
 -- ============================================================
 -- 10. FAQ 知识库 (增强已有数据)
 -- ============================================================
-INSERT INTO faq_entries (category, question, answer, keywords, priority, status) VALUES
+INSERT IGNORE INTO faq_entries (category, question, answer, keywords, priority, status) VALUES
 ('prenatal',    'NT检查是什么？什么时候做？', 'NT（颈项透明层）检查是孕早期超声筛查，测量胎儿颈后透明层厚度。最佳检查时间为孕11-13周+6天。NT值<2.5mm为正常范围。', 'NT,颈项透明层,早筛', 10, 'published'),
 ('prenatal',    '糖耐量检查要空腹吗？', '需要空腹8-12小时。检查当天先抽空腹血糖，然后喝75g葡萄糖水，1小时和2小时后分别再抽血。', '糖耐量,OGTT,空腹', 8, 'published'),
 ('prenatal',    '孕期可以同房吗？', '一般情况下孕期可以同房，但有以下情况需避免：1) 有流产史；2) 前置胎盘；3) 出血/破水；4) 孕晚期最后4周。建议咨询医生。', '同房,性生活,注意事项', 5, 'published'),
@@ -563,7 +563,7 @@ INSERT INTO faq_entries (category, question, answer, keywords, priority, status)
 -- ============================================================
 -- 11. 随访任务 (模拟运行中的状态)
 -- ============================================================
-INSERT INTO followup_tasks (member_id, trigger_type, trigger_value, title, status, assigned_to, due_date, completed_at, notes) VALUES
+INSERT IGNORE INTO followup_tasks (member_id, trigger_type, trigger_value, title, status, assigned_to, due_date, completed_at, notes) VALUES
 -- 待处理
 (2,  'gestation_week', '28', '孕28周常规随访', 'pending', 2, '2025-03-25', NULL, '常规产检提醒'),
 (7,  'lab_abnormal',   'ogtt', 'GDM血糖随访-陈静', 'in_progress', 2, '2025-02-20', NULL, 'OGTT异常，需饮食指导'),
@@ -588,7 +588,7 @@ INSERT INTO followup_tasks (member_id, trigger_type, trigger_value, title, statu
 -- ============================================================
 -- 12. 核销记录
 -- ============================================================
-INSERT INTO verification_records (entitlement_id, member_id, steward_id, qr_nonce, benefit_type, verify_count, status, verified_at, confirmed_at) VALUES
+INSERT IGNORE INTO verification_records (entitlement_id, member_id, steward_id, qr_nonce, benefit_type, verify_count, status, verified_at, confirmed_at) VALUES
 -- 已确认核销
 (1,  1,  2, 'qr-nonce-20250120001', 'consult',        1, 'confirmed', '2025-01-20 10:00:00', '2025-01-20 10:05:00'),
 (1,  1,  2, 'qr-nonce-20250215001', 'consult',        1, 'confirmed', '2025-02-15 14:00:00', '2025-02-15 14:03:00'),
@@ -609,7 +609,7 @@ INSERT INTO verification_records (entitlement_id, member_id, steward_id, qr_nonc
 -- ============================================================
 -- 13. 语音通话记录
 -- ============================================================
-INSERT INTO voice_call_logs (task_id, member_id, phone, call_type, provider, template_code, dialogue_text, call_status, duration_seconds, transcript, intent_tags, called_at, answered_at, finished_at) VALUES
+INSERT IGNORE INTO voice_call_logs (task_id, member_id, phone, call_type, provider, template_code, dialogue_text, call_status, duration_seconds, transcript, intent_tags, called_at, answered_at, finished_at) VALUES
 (5,  18, '13900060004', 'auto', 'aliyun', 'tpl-no-show-01',
  '您好，这里是惠福星链健康管理中心。您有随访任务未完成，请尽快完成体检复查。',
  'completed', 45, '用户表示已收到提醒，将于下周前往医院复查。',
@@ -653,7 +653,7 @@ INSERT INTO voice_call_logs (task_id, member_id, phone, call_type, provider, tem
 -- ============================================================
 -- 14. 数据同步日志 (模拟历史同步)
 -- ============================================================
-INSERT INTO data_sync_logs (source, sync_type, total_count, success_count, fail_count, started_at, finished_at) VALUES
+INSERT IGNORE INTO data_sync_logs (source, sync_type, total_count, success_count, fail_count, started_at, finished_at) VALUES
 ('his',  'full',         500, 498, 2, '2025-01-01 02:00:00', '2025-01-01 02:15:00'),
 ('his',  'incremental',   15,  15, 0, '2025-01-02 02:00:00', '2025-01-02 02:02:00'),
 ('lis',  'full',         300, 300, 0, '2025-01-01 02:30:00', '2025-01-01 02:40:00'),
@@ -663,7 +663,7 @@ INSERT INTO data_sync_logs (source, sync_type, total_count, success_count, fail_
 -- ============================================================
 -- 15. 授权记录 (示例)
 -- ============================================================
-INSERT INTO member_authorizations (grantor_id, grantee_id, auth_scope, status, request_msg, valid_until, requested_at, responded_at) VALUES
+INSERT IGNORE INTO member_authorizations (grantor_id, grantee_id, auth_scope, status, request_msg, valid_until, requested_at, responded_at) VALUES
 (1,  2,  '["report","timeline","reminder"]', 'active',   '家庭共享授权', '2026-01-15', '2025-01-15 10:00:00', '2025-01-15 10:30:00'),
 (6,  7,  '["report","timeline","reminder"]', 'active',   '孕期数据共享', '2026-03-01', '2025-03-01 09:00:00', '2025-03-01 09:10:00'),
 (12, 13, '["report","timeline","reminder"]', 'active',   '孕期数据共享', '2026-04-10', '2025-04-10 08:00:00', '2025-04-10 08:15:00'),
