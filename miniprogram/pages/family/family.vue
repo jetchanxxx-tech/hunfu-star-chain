@@ -1,21 +1,21 @@
 <template>
   <view class="family-page">
-    <view v-if="!familyId && !isRegister" class="empty-state">
+    <view v-show="!familyId && !isRegister" class="empty-state">
       <text>你还没有家庭账户</text>
       <button class="create-btn" @click="isRegister = true">创建我的家庭</button>
     </view>
 
     <!-- Register -->
-    <view v-if="isRegister" class="form-card">
+    <view v-show="isRegister" class="form-card">
       <text class="form-title">创建家庭账户</text>
-      <input v-model="form.name" placeholder="家庭名称（可选）" class="input" />
-      <input v-model="form.nickname" placeholder="你的昵称" class="input" />
-      <input v-model="form.phone" type="number" placeholder="手机号" class="input" />
+      <input type="text" v-model="form.name" placeholder="家庭名称（可选）" class="input" />
+      <input type="text" v-model="form.nickname" placeholder="你的昵称" class="input" />
+      <input type="number" v-model="form.phone" placeholder="手机号" class="input" />
       <button class="submit-btn" @click="submitFamily">确认创建</button>
     </view>
 
     <!-- Family detail -->
-    <view v-if="familyId && !isRegister">
+    <view v-show="familyId && !isRegister">
       <view class="family-header">
         <text class="family-name">{{ familyName || '我的家庭' }}</text>
         <text class="member-count">{{ members.length }} 位成员</text>
@@ -31,13 +31,13 @@
     </view>
 
     <!-- Add member dialog -->
-    <view v-if="showAdd" class="form-card">
+    <view v-show="showAdd" class="form-card">
       <text class="form-title">添加家庭成员</text>
-      <input v-model="addForm.nickname" placeholder="昵称" class="input" />
+      <input type="text" v-model="addForm.nickname" placeholder="昵称" class="input" />
       <picker :range="relations" @change="onRelationChange">
         <view class="input picker">{{ addForm.relation || '选择关系' }}</view>
       </picker>
-      <input v-model="addForm.phone" type="number" placeholder="手机号" class="input" />
+      <input type="number" v-model="addForm.phone" placeholder="手机号" class="input" />
       <button class="submit-btn" @click="submitAddMember">确认添加</button>
     </view>
   </view>
@@ -117,11 +117,12 @@ export default {
   padding: 10px 30px; font-size: 15px; }
 .form-card { background: #fff; padding: 24px 16px; border-radius: 10px; margin-bottom: 16px; }
 .form-title { font-size: 18px; font-weight: bold; margin-bottom: 16px; display: block; }
-.input { border: 1px solid #E5E5E5; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;
-  font-size: 14px; width: 100%; box-sizing: border-box; }
+.input { display: block; border: 1px solid #E5E5E5; border-radius: 8px; padding: 10px 12px;
+  margin-bottom: 12px; font-size: 14px; width: 100%; box-sizing: border-box;
+  background: #fff; color: #333; }
 .picker { color: #999; }
-.submit-btn { background: #2E75B6; color: #fff; border: none; border-radius: 8px;
-  padding: 12px; font-size: 15px; margin-top: 8px; }
+.submit-btn { display: block; width: 100%; background: #2E75B6; color: #fff; border: none;
+  border-radius: 8px; padding: 14px; font-size: 16px; margin-top: 12px; }
 .family-header { background: linear-gradient(135deg, #2E75B6, #1A4F7E); padding: 24px;
   border-radius: 12px; margin-bottom: 16px; }
 .family-name { color: #fff; font-size: 20px; font-weight: bold; display: block; }
