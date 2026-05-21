@@ -70,13 +70,13 @@ if [ -d "admin/dist" ]; then
     cp -r admin/dist "${STATIC_ADMIN}"
 fi
 
-if [ -d "miniprogram/dist/build/h5" ]; then
+if [ -d "miniprogram/dist" ]; then
     log "部署 H5 用户端 → ${STATIC_H5}"
     if [ -d "${STATIC_H5}" ]; then
         cp -r "${STATIC_H5}" "${BACKUP_DIR}/h5-dist-$(date +%Y%m%d%H%M%S)" 2>/dev/null || true
     fi
     rm -rf "${STATIC_H5}"
-    cp -r miniprogram/dist/build/h5 "${STATIC_H5}"
+    cp -r miniprogram/dist "${STATIC_H5}"
 fi
 
 # --- Database migration ---
