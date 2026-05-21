@@ -41,10 +41,10 @@
     "borderStyle": "white",
     "backgroundColor": "#FFFFFF",
     "list": [
-      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "static/tab-home.png", "selectedIconPath": "static/tab-home-active.png" },
-      { "pagePath": "pages/timeline/timeline", "text": "时光轴", "iconPath": "static/tab-timeline.png", "selectedIconPath": "static/tab-timeline-active.png" },
-      { "pagePath": "pages/packages/packages", "text": "服务包", "iconPath": "static/tab-pkg.png", "selectedIconPath": "static/tab-pkg-active.png" },
-      { "pagePath": "pages/ai-chat/ai-chat", "text": "灵犀", "iconPath": "static/tab-ai.png", "selectedIconPath": "static/tab-ai-active.png" }
+      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "static/tab-home.svg", "selectedIconPath": "static/tab-home-active.svg" },
+      { "pagePath": "pages/timeline/timeline", "text": "时光轴", "iconPath": "static/tab-timeline.svg", "selectedIconPath": "static/tab-timeline-active.svg" },
+      { "pagePath": "pages/packages/packages", "text": "服务包", "iconPath": "static/tab-pkg.svg", "selectedIconPath": "static/tab-pkg-active.svg" },
+      { "pagePath": "pages/ai-chat/ai-chat", "text": "灵犀", "iconPath": "static/tab-ai.svg", "selectedIconPath": "static/tab-ai-active.svg" }
     ]
   }
 }
