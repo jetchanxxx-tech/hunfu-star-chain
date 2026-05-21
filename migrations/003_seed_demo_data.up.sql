@@ -622,7 +622,7 @@ INSERT IGNORE INTO voice_call_logs (task_id, member_id, phone, call_type, provid
 
 (6,  25, '13900080005', 'auto', 'aliyun', 'tpl-dm-01',
  '您好，您的血糖检测结果偏高，请及时回院复查。需要帮助请按1，转人工请按2。',
- 'no_answer', 0, NULL, NULL,
+ 'no_answer', 0, NULL,
  '["无人接听"]', '2025-06-20 10:00:00', NULL, '2025-06-20 10:00:30'),
 
 (4,  4,  '13900010004', 'auto', 'aliyun', 'tpl-dm-recheck',
