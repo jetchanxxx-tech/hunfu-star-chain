@@ -11,12 +11,12 @@ func NewAdminStore(db *sql.DB) *AdminStore { return &AdminStore{db: db} }
 
 // --- Login ---
 type AdminUser struct {
-	ID       int64
-	Username string
-	Password string
-	Role     string
-	RealName string
-	Status   string
+	ID       int64  `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"-"`
+	Role     string `json:"role"`
+	RealName string `json:"real_name"`
+	Status   string `json:"status"`
 }
 
 func (s *AdminStore) FindAdminByUsername(username string) (*AdminUser, error) {

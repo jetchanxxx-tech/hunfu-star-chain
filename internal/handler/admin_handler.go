@@ -89,6 +89,17 @@ func (h *AdminHandler) CreatePackage(w http.ResponseWriter, r *http.Request) {
 		Error(w, http.StatusBadRequest, "invalid request")
 		return
 	}
+	if pkg.PackageUUID == "" {
+		Error(w, http.StatusBadRequest, "package_uuid required")
+		return
+	}
+	if pkg.Benefits == "" {
+		pkg.Benefits = "[]"
+	}
+	if !json.Valid([]byte(pkg.Benefits)) {
+		Error(w, http.StatusBadRequest, "benefits must be valid JSON array")
+		return
+	}
 	if err := h.store.CreatePackage(&pkg); err != nil {
 		Error(w, http.StatusInternalServerError, "create failed: "+err.Error())
 		return

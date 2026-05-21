@@ -1,0 +1,31 @@
+{
+  "name": "huifu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "npx playwright test --config=tests/playwright.config.ts",
+    "test:api": "npx playwright test --config=tests/playwright.config.ts --project=api",
+    "test:admin": "npx playwright test --config=tests/playwright.config.ts --project=admin-desktop",
+    "test:h5": "npx playwright test --config=tests/playwright.config.ts --project=h5-mobile",
+    "test:report": "npx playwright show-report playwright-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jetchanxxx-tech/hunfu-star-chain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jetchanxxx-tech/hunfu-star-chain/issues"
+  },
+  "homepage": "https://github.com/jetchanxxx-tech/hunfu-star-chain#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
