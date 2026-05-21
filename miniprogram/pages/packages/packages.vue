@@ -25,7 +25,18 @@ export default {
   onShow() { this.load() },
   methods: {
     load() {
-      api.getPackages().then(res => { this.packages = res || [] })
+      const memberId = uni.getStorageSync('member_id')
+      if (memberId) {
+        api.getPackages().then(res => { this.packages = res || [] })
+      } else {
+        // 未登录：从 demo 接口加载服务包
+        uni.request({
+          url: '/api/v1/demo/home',
+          success: (res) => {
+            this.packages = (res.data && res.data.packages) ? res.data.packages : []
+          }
+        })
+      }
     }
   }
 }

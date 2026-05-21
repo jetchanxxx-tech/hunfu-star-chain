@@ -1,6 +1,15 @@
 <template>
   <view class="chat-page">
     <scroll-view class="messages" scroll-y :scroll-top="scrollTop">
+      <!-- 欢迎提示 -->
+      <view v-if="messages.length === 0" class="welcome">
+        <text class="welcome-title">惠福灵犀 · AI 健康助手</text>
+        <text class="welcome-sub">我是您的专属健康顾问，可以帮您解答孕期、产后、育儿的各种问题</text>
+        <view class="faq-grid">
+          <view v-for="faq in faqList" :key="faq" class="faq-chip" @click="tapFAQ(faq)">{{ faq }}</view>
+        </view>
+      </view>
+
       <view v-for="(msg, i) in messages" :key="i"
         :class="['msg', msg.role === 'user' ? 'msg-user' : 'msg-ai']">
         <text>{{ msg.content }}</text>
@@ -31,13 +40,18 @@ export default {
       input: '',
       thinking: false,
       sessionId: '',
-      scrollTop: 0
+      scrollTop: 0,
+      faqList: ['孕期可以运动吗？', 'NT检查是什么？', '产后多久可以洗澡？', '宝宝发烧怎么办？', '母乳不足怎么办？', '糖耐量要空腹吗？']
     }
   },
   onLoad() {
     this.sessionId = 'sess_' + Date.now()
   },
   methods: {
+    tapFAQ(q) {
+      this.input = q
+      this.send()
+    },
     async send() {
       const text = this.input.trim()
       if (!text) return
@@ -51,7 +65,7 @@ export default {
         const msg = { role: 'ai', content: res.reply, source: res.source, emergency: res.emergency }
         this.messages.push(msg)
       } catch {
-        this.messages.push({ role: 'ai', content: '抱歉，服务暂时不可用，请稍后再试。' })
+        this.messages.push({ role: 'ai', content: '抱歉，AI 服务暂未配置，请先设置 DEEPSEEK_API_KEY。您可以浏览 FAQ 获取常见问题解答。' })
       } finally {
         this.thinking = false
         this.scrollToBottom()
@@ -78,4 +92,9 @@ export default {
   font-size: 14px; border: none; }
 .send-btn { background: #2E75B6; color: #fff; border: none; border-radius: 20px;
   padding: 8px 20px; margin-left: 8px; font-size: 14px; }
+.welcome { padding: 30px 16px; text-align: center; }
+.welcome-title { font-size: 20px; font-weight: bold; color: #2E75B6; display: block; margin-bottom: 8px; }
+.welcome-sub { font-size: 13px; color: #999; display: block; margin-bottom: 20px; }
+.faq-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.faq-chip { background: #E8F4FD; color: #2E75B6; padding: 8px 16px; border-radius: 16px; font-size: 13px; }
 </style>
