@@ -23,6 +23,12 @@ build-admin:
 dev-admin:
 	cd admin && npm run dev
 
+build-h5:
+	cd miniprogram && npm ci && npm run build:h5
+
+dev-h5:
+	cd miniprogram && npm run dev:h5
+
 # ========== Database ==========
 
 migrate-up:

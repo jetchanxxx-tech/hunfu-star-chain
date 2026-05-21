@@ -31,12 +31,21 @@ command -v migrate >/dev/null 2>&1 || warn "golang-migrate 未安装，跳过数
 log "构建 Go 后端..."
 go build -ldflags="-s -w" -o "${BINARY}" ./cmd/server
 
-# --- Build admin dashboard ---
+# --- Build admin dashboard (base=/admin/) ---
 if command -v node >/dev/null 2>&1; then
-    log "构建管理后台..."
+    log "构建管理后台 (base=/admin/)..."
     cd admin
     npm ci --production=false
     npm run build
+    cd ..
+fi
+
+# --- Build H5 用户端 ---
+if command -v node >/dev/null 2>&1 && [ -d "miniprogram" ]; then
+    log "构建 H5 用户端..."
+    cd miniprogram
+    npm ci --production=false
+    npx vite build --outDir dist/build/h5 2>/dev/null || npm run build:h5 2>/dev/null || warn "H5 构建跳过 (需配置 build:h5 脚本)"
     cd ..
 fi
 
@@ -47,8 +56,27 @@ cp "${BINARY}" "${RELEASE_DIR}/${APP}"
 cp config.yaml "${RELEASE_DIR}/"
 cp -r migrations "${RELEASE_DIR}/"
 
+# Static files → 固定路径 (nginx 直接引用，不经过 current 软链)
+STATIC_ADMIN="${DEPLOY_DIR}/admin-dist"
+STATIC_H5="${DEPLOY_DIR}/h5-dist"
+
 if [ -d "admin/dist" ]; then
-    cp -r admin/dist "${RELEASE_DIR}/admin-dist"
+    log "部署管理后台 → ${STATIC_ADMIN}"
+    # 备份旧版本
+    if [ -d "${STATIC_ADMIN}" ]; then
+        cp -r "${STATIC_ADMIN}" "${BACKUP_DIR}/admin-dist-$(date +%Y%m%d%H%M%S)" 2>/dev/null || true
+    fi
+    rm -rf "${STATIC_ADMIN}"
+    cp -r admin/dist "${STATIC_ADMIN}"
+fi
+
+if [ -d "miniprogram/dist/build/h5" ]; then
+    log "部署 H5 用户端 → ${STATIC_H5}"
+    if [ -d "${STATIC_H5}" ]; then
+        cp -r "${STATIC_H5}" "${BACKUP_DIR}/h5-dist-$(date +%Y%m%d%H%M%S)" 2>/dev/null || true
+    fi
+    rm -rf "${STATIC_H5}"
+    cp -r miniprogram/dist/build/h5 "${STATIC_H5}"
 fi
 
 # --- Database migration ---
