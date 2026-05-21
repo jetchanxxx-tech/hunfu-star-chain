@@ -1,4 +1,9 @@
-const BASE_URL = 'https://api.huifu.example.com/api/v1'
+// #ifdef H5
+const BASE_URL = '/api/v1'
+// #endif
+// #ifdef MP-WEIXIN
+const BASE_URL = 'https://huifu.pangu-cloud.com/api/v1'
+// #endif
 
 function request(method, path, data) {
   const token = uni.getStorageSync('token')

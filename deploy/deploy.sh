@@ -41,11 +41,11 @@ if command -v node >/dev/null 2>&1; then
 fi
 
 # --- Build H5 用户端 ---
-if command -v node >/dev/null 2>&1 && [ -d "miniprogram" ]; then
+if command -v node >/dev/null 2>&1 && [ -d "miniprogram" ] && [ -f "miniprogram/package.json" ]; then
     log "构建 H5 用户端..."
     cd miniprogram
     npm ci --production=false
-    npx vite build --outDir dist/build/h5 2>/dev/null || npm run build:h5 2>/dev/null || warn "H5 构建跳过 (需配置 build:h5 脚本)"
+    npm run build:h5
     cd ..
 fi
 
