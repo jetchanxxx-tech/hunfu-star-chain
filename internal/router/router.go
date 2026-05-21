@@ -21,6 +21,16 @@ func New(cfg *config.Config, db *sql.DB) http.Handler {
 	mux.HandleFunc("POST /api/v1/auth/wx-login", authH.WxLogin)
 	mux.HandleFunc("POST /api/v1/auth/bind-wechat", authH.BindWechat)
 
+	// Admin
+	adminH := handler.NewAdminHandler(db)
+	mux.HandleFunc("POST /api/v1/admin/login", adminH.Login)
+	mux.HandleFunc("GET /api/v1/admin/dashboard", adminH.Dashboard)
+	mux.HandleFunc("GET /api/v1/admin/members", adminH.ListMembers)
+	mux.HandleFunc("GET /api/v1/admin/packages", adminH.ListPackages)
+	mux.HandleFunc("POST /api/v1/admin/packages", adminH.CreatePackage)
+	mux.HandleFunc("PUT /api/v1/admin/packages/{id}", adminH.UpdatePackage)
+	mux.HandleFunc("GET /api/v1/admin/users", adminH.ListUsers)
+
 	// Families & Members
 	familyH := handler.NewFamilyHandler(db)
 	mux.HandleFunc("POST /api/v1/families", familyH.Create)

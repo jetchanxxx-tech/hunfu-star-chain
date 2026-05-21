@@ -33,7 +33,7 @@ function actionColor(a: string) {
 }
 async function loadLogs() {
   const { data } = await api.getAuthAuditLogs({ offset: (page-1)*20, limit: 20 })
-  logs.value = data.data || []
+  logs.value = data || []
 }
 function onPage(p: number) { page = p; loadLogs() }
 onMounted(loadLogs)

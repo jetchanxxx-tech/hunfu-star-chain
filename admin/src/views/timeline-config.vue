@@ -109,12 +109,12 @@ const ovrForm = reactive<any>({})
 
 async function loadTemplates() {
   const { data } = await api.getNodeTemplates()
-  templates.value = data.data
+  templates.value = data
 }
 async function loadOverrides() {
   if (!hospitalCode.value) return ElMessage.warning('请输入医院编码')
   const { data } = await api.getNodeOverrides(hospitalCode.value)
-  overrides.value = data.data
+  overrides.value = data
 }
 function editTemplate(row: any) {
   Object.assign(tplForm, row ? { ...row } : { id: 0, node_code: '', node_name: '', category: 'prenatal', default_start: '', default_end: '', reminder_days: 7, sort_order: 0, description: '' })

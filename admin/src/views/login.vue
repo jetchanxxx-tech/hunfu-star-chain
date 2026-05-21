@@ -29,12 +29,22 @@ const form = reactive({ username: '', password: '' })
 async function login() {
   loading.value = true
   try {
-    // API call placeholder
-    localStorage.setItem('admin_token', 'placeholder_token')
+    const res = await fetch('/api/v1/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: form.username, password: form.password })
+    })
+    if (!res.ok) {
+      const err = await res.json()
+      throw new Error(err.error || '登录失败')
+    }
+    const data = await res.json()
+    localStorage.setItem('admin_token', data.token)
+    localStorage.setItem('admin_user', JSON.stringify({ username: data.username, role: data.role, real_name: data.real_name }))
     ElMessage.success('登录成功')
     router.push('/dashboard')
-  } catch {
-    ElMessage.error('登录失败')
+  } catch (e: any) {
+    ElMessage.error(e.message || '登录失败')
   } finally {
     loading.value = false
   }

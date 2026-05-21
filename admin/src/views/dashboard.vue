@@ -5,35 +5,33 @@
         <el-card class="stat-card">
           <div class="stat-label">{{ c.label }}</div>
           <div class="stat-value">{{ c.value }}</div>
-          <div class="stat-trend" :style="{ color: c.trend > 0 ? '#67C23A' : '#F56C6C' }">
-            {{ c.trend > 0 ? '↑' : '↓' }} {{ Math.abs(c.trend) }}%
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="16" style="margin-top:16px">
+      <el-col :span="12">
+        <el-card title="成员状态分布">
+          <div style="padding:20px">
+            <el-progress :percentage="activePct" :color="'#67C23A'" :stroke-width="20">
+              <span>活跃 {{ stats.active_members }} 人</span>
+            </el-progress>
+            <el-progress :percentage="inactivePct" :color="'#F56C6C'" :stroke-width="20" style="margin-top:20px">
+              <span>非活跃 {{ stats.inactive_members }} 人</span>
+            </el-progress>
           </div>
         </el-card>
       </el-col>
-    </el-row>
-
-    <el-row :gutter="16" style="margin-top:16px">
       <el-col :span="12">
-        <el-card title="会员增长趋势">
-          <div class="chart-placeholder">会员增长趋势图（预留 ECharts）</div>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card title="服务包销售排行">
-          <div class="chart-placeholder">销售排行榜（预留 ECharts）</div>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-row :gutter="16" style="margin-top:16px">
-      <el-col :span="12">
-        <el-card title="随访完成率">
-          <div class="chart-placeholder">随访完成率趋势（预留 ECharts）</div>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card title="转化漏斗">
-          <div class="chart-placeholder">注册→购买→续费转化漏斗（预留 ECharts）</div>
+        <el-card title="服务概览">
+          <div style="padding:10px">
+            <el-descriptions :column="2" border>
+              <el-descriptions-item label="家庭总数">{{ stats.total_families }}</el-descriptions-item>
+              <el-descriptions-item label="活跃服务包">{{ stats.active_packages }}</el-descriptions-item>
+              <el-descriptions-item label="待处理任务">{{ stats.pending_tasks }}</el-descriptions-item>
+              <el-descriptions-item label="随访完成率">{{ stats.task_complete_rate.toFixed(1) }}%</el-descriptions-item>
+            </el-descriptions>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -41,17 +39,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
-const cards = ref([
-  { label: '星球居民总数', value: '--', trend: 0 },
-  { label: '本月新增家庭', value: '--', trend: 0 },
-  { label: '活跃服务包', value: '--', trend: 0 },
-  { label: '随访完成率', value: '--%', trend: 0 }
+const stats = ref({
+  total_members: 0, active_members: 0, inactive_members: 0,
+  total_families: 0, new_members_month: 0, active_packages: 0,
+  pending_tasks: 0, task_complete_rate: 0
+})
+
+const activePct = computed(() => stats.value.total_members ? Math.round(stats.value.active_members / stats.value.total_members * 100) : 0)
+const inactivePct = computed(() => stats.value.total_members ? Math.round(stats.value.inactive_members / stats.value.total_members * 100) : 0)
+
+const cards = computed(() => [
+  { label: '星球居民总数', value: stats.value.total_members },
+  { label: '本月新增', value: stats.value.new_members_month },
+  { label: '活跃服务包', value: stats.value.active_packages },
+  { label: '随访完成率', value: stats.value.task_complete_rate.toFixed(1) + '%' }
 ])
 
 onMounted(async () => {
-  // Fetch real data when API ready
+  try {
+    const token = localStorage.getItem('admin_token')
+    const res = await fetch('/api/v1/admin/dashboard', { headers: { Authorization: `Bearer ${token}` } })
+    if (res.ok) stats.value = await res.json()
+  } catch { /* ignore */ }
 })
 </script>
 

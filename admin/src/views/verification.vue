@@ -34,7 +34,7 @@ async function loadRecords() {
   const params: any = { offset: (page-1)*20, limit: 20 }
   if (filter.member_id) params.member_id = filter.member_id
   const { data } = await api.getVerificationRecords(params)
-  records.value = data.data || []
+  records.value = data || []
 }
 function onPage(p: number) { page = p; loadRecords() }
 onMounted(loadRecords)

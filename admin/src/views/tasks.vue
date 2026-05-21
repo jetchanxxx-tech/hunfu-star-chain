@@ -118,11 +118,11 @@ async function loadTasks() {
   if (filter.status) params.status = filter.status
   if (filter.trigger_type) params.trigger_type = filter.trigger_type
   const { data } = await api.getTasks(params)
-  tasks.value = data.data || []
+  tasks.value = data || []
 }
 async function loadStats() {
   const { data } = await api.getTaskStats()
-  stats.value = data.data || {}
+  stats.value = data || {}
 }
 function onPage(p: number) { page = p; loadTasks() }
 function assignTask(row: any) { currentTaskId = row.id; assignVisible.value = true }
