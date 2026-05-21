@@ -2,7 +2,7 @@
   <view class="home">
     <!-- Top user greeting -->
     <view class="header">
-      <text class="greeting">你好，星球居民</text>
+      <text class="greeting">你好，{{ nickname || '星球居民' }}</text>
       <text class="subtitle">今天是你孕期的第 {{ week }} 周</text>
     </view>
 
@@ -59,7 +59,7 @@ import { api } from '@/api/index.js'
 
 export default {
   data() {
-    return { week: 0, events: [], reports: [] }
+    return { week: 0, events: [], reports: [], nickname: '' }
   },
   onShow() {
     this.loadData()
@@ -68,9 +68,24 @@ export default {
     navigate(url) { uni.navigateTo({ url }) },
     loadData() {
       const memberId = uni.getStorageSync('member_id')
-      if (!memberId) return
-      api.getTimeline(memberId, 5).then(events => { this.events = events || [] })
-      api.getReports(memberId, 3).then(reports => { this.reports = reports || [] })
+      if (memberId) {
+        api.getTimeline(memberId, 5).then(events => { this.events = events || [] })
+        api.getReports(memberId, 3).then(reports => { this.reports = reports || [] })
+      } else {
+        this.loadDemo()
+      }
+    },
+    loadDemo() {
+      uni.request({
+        url: '/api/v1/demo/home',
+        success: (res) => {
+          const d = res.data
+          this.nickname = d.nickname || ''
+          this.week = d.week || 0
+          this.events = d.events || []
+          this.reports = d.reports || []
+        }
+      })
     }
   }
 }

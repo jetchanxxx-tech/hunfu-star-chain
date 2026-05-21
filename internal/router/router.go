@@ -16,6 +16,10 @@ func New(cfg *config.Config, db *sql.DB) http.Handler {
 	healthH := handler.NewHealth(db)
 	mux.HandleFunc("GET /api/health", healthH.Check)
 
+	// Demo (公开，无需登录)
+	demoH := handler.NewDemoHandler(db)
+	mux.HandleFunc("GET /api/v1/demo/home", demoH.Home)
+
 	// Auth (WeChat login)
 	authH := handler.NewAuthHandler(cfg, db)
 	mux.HandleFunc("POST /api/v1/auth/wx-login", authH.WxLogin)
