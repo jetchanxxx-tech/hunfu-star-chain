@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev:h5": "vite",
-    "build:h5": "vite build",
+    "build:h5": "vite build && node -e \"const fs=require('fs');const p=require('path');const d='dist/static';fs.mkdirSync(d,{recursive:true});['tab-home.svg','tab-home-active.svg','tab-timeline.svg','tab-timeline-active.svg','tab-pkg.svg','tab-pkg-active.svg','tab-ai.svg','tab-ai-active.svg'].forEach(f=>{const s=p.join('static',f),t=p.join(d,f);if(fs.existsSync(s))fs.copyFileSync(s,t)})",
     "dev:mp-weixin": "uni -p mp-weixin",
     "build:mp-weixin": "uni build -p mp-weixin"
   },

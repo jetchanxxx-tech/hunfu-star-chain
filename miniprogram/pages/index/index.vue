@@ -50,7 +50,7 @@
         <text class="more" @click="navigate('/pages/reports/reports')">全部 ></text>
       </view>
       <view v-if="reports.length === 0" class="empty">暂无数据</view>
-      <view v-for="r in reports" :key="r.id" class="report-item">
+      <view v-for="r in reports" :key="r.id" class="report-item" @click="navigate('/pages/reports/reports')">
         <text class="rpt-type">{{ reportLabel(r.report_type) }}</text>
         <text class="rpt-date">{{ r.report_date }}</text>
       </view>

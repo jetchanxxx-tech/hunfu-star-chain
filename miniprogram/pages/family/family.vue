@@ -1,5 +1,9 @@
 <template>
   <view class="family-page">
+    <view class="nav-back" @click="goBack">
+      <text class="back-icon">←</text>
+      <text>返回</text>
+    </view>
     <view v-show="!familyId && !isRegister" class="empty-state">
       <text>你还没有家庭账户</text>
       <button class="create-btn" @click="isRegister = true">创建我的家庭</button>
@@ -8,9 +12,9 @@
     <!-- Register -->
     <view v-show="isRegister" class="form-card">
       <text class="form-title">创建家庭账户</text>
-      <input type="text" v-model="form.name" placeholder="家庭名称（可选）" class="input" />
-      <input type="text" v-model="form.nickname" placeholder="你的昵称" class="input" />
-      <input type="number" v-model="form.phone" placeholder="手机号" class="input" />
+      <input v-model="form.name" placeholder="家庭名称（可选）" class="input" @tap.stop />
+      <input v-model="form.nickname" placeholder="你的昵称" class="input" @tap.stop />
+      <input v-model="form.phone" placeholder="手机号" class="input" @tap.stop />
       <button class="submit-btn" @click="submitFamily">确认创建</button>
     </view>
 
@@ -33,11 +37,11 @@
     <!-- Add member dialog -->
     <view v-show="showAdd" class="form-card">
       <text class="form-title">添加家庭成员</text>
-      <input type="text" v-model="addForm.nickname" placeholder="昵称" class="input" />
+      <input v-model="addForm.nickname" placeholder="昵称" class="input" @tap.stop />
       <picker :range="relations" @change="onRelationChange">
         <view class="input picker">{{ addForm.relation || '选择关系' }}</view>
       </picker>
-      <input type="number" v-model="addForm.phone" placeholder="手机号" class="input" />
+      <input v-model="addForm.phone" placeholder="手机号" class="input" @tap.stop />
       <button class="submit-btn" @click="submitAddMember">确认添加</button>
     </view>
   </view>
@@ -62,6 +66,7 @@ export default {
     this.loadFamily()
   },
   methods: {
+    goBack() { uni.navigateBack() },
     roleLabel(r) {
       const m = { self: '本人', spouse: '配偶', child: '子女', parent: '父母', other: '其他' }
       return m[r] || r
@@ -112,15 +117,18 @@ export default {
 
 <style>
 .family-page { padding: 20px 16px; }
+.nav-back { display: flex; align-items: center; gap: 4px; margin-bottom: 16px;
+  font-size: 14px; color: #2E75B6; cursor: pointer; }
+.back-icon { font-size: 18px; font-weight: bold; }
 .empty-state { display: flex; flex-direction: column; align-items: center; padding: 80px 0; color: #999; }
 .create-btn { margin-top: 20px; background: #2E75B6; color: #fff; border: none; border-radius: 8px;
   padding: 10px 30px; font-size: 15px; }
 .form-card { background: #fff; padding: 24px 16px; border-radius: 10px; margin-bottom: 16px; }
 .form-title { font-size: 18px; font-weight: bold; margin-bottom: 16px; display: block; }
-.input { display: block; border: 1px solid #E5E5E5; border-radius: 8px; padding: 10px 12px;
-  margin-bottom: 12px; font-size: 14px; width: 100%; box-sizing: border-box;
-  background: #fff; color: #333; }
-.picker { color: #999; }
+.input { display: block; border: 1px solid #E5E5E5; border-radius: 8px; padding: 12px;
+  margin-bottom: 12px; font-size: 16px; width: 100%; box-sizing: border-box;
+  background: #fff; color: #333; min-height: 48px; line-height: 24px; }
+.picker { color: #999; display: flex; align-items: center; }
 .submit-btn { display: block; width: 100%; background: #2E75B6; color: #fff; border: none;
   border-radius: 8px; padding: 14px; font-size: 16px; margin-top: 12px; }
 .family-header { background: linear-gradient(135deg, #2E75B6, #1A4F7E); padding: 24px;
